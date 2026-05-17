@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arduino UNO Q Controller</title>
+    <!-- Include the official Telegram WebApp JavaScript SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <style>
+        /* Automatically adapts UI colors to match the user's Telegram theme */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #222222);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+        }
+
+        h2 {
+            margin-bottom: 5px;
+            color: var(--tg-theme-hint-color, #555555);
+        }
+
+        .user-greeting {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: var(--tg-theme-link-color, #2481cc);
+        }
+
+        .config-box {
+            width: 90%;
+            max-width: 350px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--tg-theme-hint-color, #999999);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid var(--tg-theme-hint-color, #ccc);
+            background-color: var(--tg-theme-secondary-bg-color, #f5f5f5);
+            color: var(--tg-theme-text-color, #000);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .btn-container {
+            width: 100%;
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.1s ease, opacity 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        button:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        .btn-on {
+            background-color: #34c759; /* iOS Green */
+            color: white;
+        }
+
+        .btn-off {
+            background-color: #ff3b30; /* iOS Red */
+            color: white;
+        }
+
+        #status-message {
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--tg-theme-hint-color, #777777);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>UNO Q Smart Control</h2>
+    <!-- This will dynamically greet the user using Telegram data -->
+    <div class="user-greeting" id="greeting">Hello, Explorer!</div>
+
+    <!-- Configuration box to easily update your tunnel URL without editing code -->
+    <div class="config-box">
+        <label for="tunnel-url">Arduino Backend URL:</label>
+        <input type="text" id="tunnel-url" placeholder="https://your-ngrok-or-localtunnel-url.app">
+    </div>
+
+    <!-- Main control buttons -->
+    <div class="btn-container">
+        <button class="btn-on" onclick="sendHardwareCommand('ON')">Turn LED ON</button>
+        <button class="btn-off" onclick="sendHardwareCommand('OFF')">Turn LED OFF</button>
+    </div>
+
+    <p id="status-message">Awaiting command...</p>
+
+    <script>
+        // 1. Initialize Telegram WebApp SDK
+        const tg = window.Telegram.WebApp;
+        tg.ready(); // Alerts Telegram that the app is fully loaded
+        tg.expand(); // Expands the Mini App to full-screen height inside the chat
+
+        // 2. Personalize the UI using Telegram's built-in user data
+        const statusText = document.getElementById('status-message');
+        const greetingText = document.getElementById('greeting');
+        
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            greetingText.innerText = `Hello, ${tg.initDataUnsafe.user.first_name}! 👋`;
+        }
+
+        // 3. Main function to transmit commands to your Arduino UNO Q over Wi-Fi
+        async function sendHardwareCommand(action) {
+            const baseUrl = document.getElementById('tunnel-url').value.trim();
+            
+            if (!baseUrl) {
+                statusText.innerText = "❌ Please enter your Arduino Backend URL first!";
+                statusText.style.color = "#ff3b30";
+                tg.HapticFeedback.notificationOccurred('error'); // Triggers physical phone vibration
+                return;
+            }
+
+            statusText.innerText = `Sending continuous request to turn ${action}...`;
+            statusText.style.color = "var(--tg-theme-hint-color, #777777)";
+
+            try {
+                // Strip trailing slash if the user pasted one by mistake
+                const sanitizedUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+
+                const response = await fetch(`${sanitizedUrl}/led`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: action })
+                });
+
+                if (response.ok) {
+                    statusText.innerText = `✅ Success! Arduino LED is ${action}.`;
+                    statusText.style.color = "#34c759";
+                    tg.HapticFeedback.notificationOccurred('success'); // Soft success haptic vibration
+                } else {
+                    statusText.innerText = `⚠️ Server Error: ${response.status}`;
+                    statusText.style.color = "#ff9500";
+                    tg.HapticFeedback.notificationOccurred('warning');
+                }
+            } catch (error) {
+                console.error(error);
+                statusText.innerText = "❌ Connection Failed. Check your URL or board status.";
+                statusText.style.color = "#ff3b30";
+                tg.HapticFeedback.notificationOccurred('error');
+            }
+        }
+    </script>
+</body>
+</html>
