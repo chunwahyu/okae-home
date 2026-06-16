@@ -106,21 +106,22 @@
 </head>
 <body>
 
-    <h2>Okae-Home Smart Control</h2>
+    <h1>Okae-Home Dashboard</h1>
     <!-- This will dynamically greet the user using Telegram data -->
     <div class="user-greeting" id="greeting">Hello, Explorer!</div>
 
-    <!-- Configuration box to easily update your tunnel URL without editing code -->
+    <!-- Configuration box to easily update your tunnel URL without editing code 
     <div class="config-box">
         <label for="tunnel-url">Arduino Backend URL:</label>
         <input type="text" id="tunnel-url" placeholder="https://your-ngrok-or-localtunnel-url.app">
     </div>
+    -->
         
     <div style="text-align: center;">
         <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_hours_chart.png" alt="Arduino Image" style="width: 350px; height: auto;">
     </div>
 
-    <!-- Main control buttons -->
+    <!-- Main control buttons 
     <div class="btn-container">
         <button class="btn-on" onclick="sendHardwareCommand('ON')">Turn LED ON</button>
         <button class="btn-off" onclick="sendHardwareCommand('OFF')">Turn LED OFF</button>
@@ -128,6 +129,8 @@
 
     <p id="status-message">Awaiting command...</p>
 
+    -->
+    
     <script>
         // 1. Initialize Telegram WebApp SDK
         const tg = window.Telegram.WebApp;
