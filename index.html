@@ -102,6 +102,24 @@
             color: var(--tg-theme-hint-color, #777777);
             text-align: center;
         }
+
+        /* below taken from https://stackoverflow.com/a/56401601/765271*/
+
+        .click-zoom input[type=checkbox] {
+            display: none
+        }
+
+        .click-zoom img {  
+              transition: transform 0.25s ease;
+              cursor: zoom-in
+        }
+
+        .click-zoom input[type=checkbox]:checked~img {
+              /* how to modify this to use exact image width instead of scaling?*/
+              transform:  scale(2);
+              cursor: zoom-out
+        }
+   
     </style>
 </head>
 <body>
@@ -123,7 +141,7 @@
 
     <hr>
     
-    <div style="text-align: center;">
+    <div class='click-zoom' style="text-align: center;">
         <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_hours_chart.png" alt="Arduino Image" style="width: 350px; height: auto;">
     </div>
 
