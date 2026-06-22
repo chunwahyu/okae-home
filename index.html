@@ -230,12 +230,32 @@
           display: table;
           clear: both;
         }
+
+        .container {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: center;
+          align-items: stretch;
+          align-content: stretch;
+          gap: 8px;
+        }
+
+        .item-2 {
+          flex-grow: 1;
+        }
    
     </style>
 </head>
 <body>
 
-    <h1>Okae-Home Dashboard</h1>
+    <div class="container">
+        <div>
+            <img src="https://chunwahyu.github.io/okae-home/uploads/okae-home logo.avif" alt="Okae-Home" style="width: 130px; height: auto;">
+        </div>
+        <div class="item-2"><h1>Okae-Home Dashboard</h1></div>
+    </div>
+    
     <!-- This will dynamically greet the user using Telegram data -->
     <div class="user-greeting" id="greeting">Hello, Explorer!</div>
 
@@ -246,29 +266,18 @@
     </div>
     -->
 
-    <div style="text-align: center;">
-        <img src="https://chunwahyu.github.io/okae-home/uploads/okae-home logo.avif" alt="Okae-Home" style="width: 350px; height: auto;">
-    </div>
-
-    <hr>
-
-    <div style="text-align: center;">
-        <img src="https://chunwahyu.github.io/okae-home/uploads/today_hydration.png" alt="Arduino Image" style="width: 350px; height: auto;">
+    <div class="container">
+      <div>
+        <img src="https://chunwahyu.github.io/okae-home/uploads/today_hydration.png" alt="Today Hydration" style="width: 350px; height: auto;">
+      </div>
+      <div>
+        <img src="https://chunwahyu.github.io/okae-home/uploads/hydration_trend.png" alt="Hydration Trend" style="width: 350px; height: auto;">
+      </div>
     </div>
     
-    <hr>
-
     <div style="text-align: center;">
         <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_hours_chart.png" alt="Arduino Image" style="width: 350px; height: auto;">
     </div>
-
-     <hr>
-    
-    <div style="text-align: center;">
-        <img src="https://chunwahyu.github.io/okae-home/uploads/hydration_trend.png" alt="Arduino Image" style="width: 350px; height: auto;">
-    </div>
-
-     <hr>
 
     <div style="text-align: center;">
         <img src="https://chunwahyu.github.io/okae-home/uploads/Happiness Proxy Scoring Model2.png" alt="Arduino Image" style="width: 350px; height: auto;">
@@ -290,7 +299,6 @@
       <img class="modal-content" id="img01">
       <div id="caption"></div>
     </div>
-
     
     <script>
         // 1. Initialize Telegram WebApp SDK
