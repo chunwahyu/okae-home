@@ -244,6 +244,62 @@
         .item-2 {
           flex-grow: 1;
         }
+
+         .calendar {
+            width: 380px; /* 微調寬度以容納多顆星 */
+            background: #fff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .calendar-header {
+            background: #333;
+            color: #fff;
+            padding: 15px 15px 5px 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .star-counter {
+            background: #333;
+            color: #ffcc00;
+            text-align: center;
+            font-size: 0.85rem;
+            padding-bottom: 15px;
+            font-weight: 500;
+        }
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: #eee;
+            text-align: center;
+            font-weight: bold;
+            padding: 10px 0;
+            font-size: 0.8rem;
+        }
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            padding: 10px;
+        }
+        .day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column; /* 讓日期數字在上，星星在下 */
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            font-size: 0.9rem;
+            border: 1px solid #fafafa;
+        }
+        /* 星星容器樣式 */
+        .stars-container {
+            color: #ffcc00;
+            font-size: 10px; /* 縮小星星字體以容納多顆 */
+            line-height: 1;
+            margin-top: 2px;
+            letter-spacing: -1px; /* 讓星星靠緊一點 */
+        }
    
     </style>
 </head>
@@ -265,6 +321,17 @@
         <input type="text" id="tunnel-url" placeholder="https://your-ngrok-or-localtunnel-url.app">
     </div>
     -->
+
+    <div class="calendar">
+        <div class="calendar-header" id="calendar-month-year">載入中...</div>
+        <div class="star-counter" id="total-stars-count"></div>
+        
+        <div class="weekdays">
+            <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+        </div>
+        <div class="days" id="calendar-days"></div>
+    </div>
+    
 
     <div class="container">
       <div>
@@ -382,6 +449,84 @@
             captionText.innerHTML = this.nextElementSibling.innerHTML;
           }
         }
+
+        
+fetch('/uploads/star_records.csv')
+            .then(response => {
+                if (!response.ok) throw new Error('無法讀取 CSV 檔案');
+                return response.text();
+            })
+            .then(csvText => {
+                const lines = csvText.split('\n');
+                const dataLine = lines[1];
+                const matches = dataLine.match(/(".*?"|[^,]+)(?=\s*,|\s*$)/g);
+                
+                const year = parseInt(matches[0]);
+                const month = parseInt(matches[1]);
+                
+                // 解析 "5:1,12:3,18:2,25:4" 成為一個 JavaScript 鍵值對物件 (Map)
+                const starredDaysRaw = matches[2].replace(/"/g, '');
+                const starMap = {};
+                let totalStarsCalculated = 0;
+
+                if (starredDaysRaw.trim() !== "") {
+                    starredDaysRaw.split(',').forEach(item => {
+                        const [day, count] = item.split(':');
+                        const starCount = parseInt(count);
+                        starMap[parseInt(day)] = starCount;
+                        totalStarsCalculated += starCount; // 累加總星星數
+                    });
+                }
+
+                // 呼叫渲染函式
+                renderCalendar(year, month, starMap, totalStarsCalculated);
+            })
+            .catch(error => {
+                document.getElementById("calendar-month-year").innerText = "資料載入失敗";
+                console.error('錯誤:', error);
+            });
+
+        function renderCalendar(year, month, starMap, totalStars) {
+            const monthNames = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
+            
+            document.getElementById("calendar-month-year").innerText = `${year}年 ${monthNames[month - 1]}`;
+            document.getElementById("total-stars-count").innerText = `⭐ 本月星星總數: ${totalStars} 個`;
+
+            const totalDays = new Date(year, month, 0).getDate();
+            const startDayOfWeek = new Date(year, month - 1, 1).getDay();
+            const daysContainer = document.getElementById("calendar-days");
+
+            // 渲染前置空白格子
+            for (let i = 0; i < startDayOfWeek; i++) {
+                const blankSlot = document.createElement("div");
+                daysContainer.appendChild(blankSlot);
+            }
+
+            // 渲染日期與星星
+            for (let day = 1; day <= totalDays; day++) {
+                const daySquare = document.createElement("div");
+                daySquare.classList.add("day");
+                daySquare.innerText = day;
+
+                // 檢查這一天是否有星星設定
+                if (starMap[day]) {
+                    const starCount = starMap[day];
+                    
+                    // 建立一個專門放星星的 HTML 區塊
+                    const starsDiv = document.createElement("div");
+                    starsDiv.classList.add("stars-container");
+                    
+                    // 根據 CSV 設定的數量，重複產生文字 "★"
+                    starsDiv.innerText = "★".repeat(starCount);
+                    
+                    daySquare.appendChild(starsDiv);
+                }
+
+                daysContainer.appendChild(daySquare);
+            }
+        }
+
+        
         
     </script>
 </body>
