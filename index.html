@@ -451,7 +451,7 @@
         }
 
         
-fetch('/uploads/star_records.csv')
+        fetch('uploads/star_records.csv')
             .then(response => {
                 if (!response.ok) throw new Error('無法讀取 CSV 檔案');
                 return response.text();
