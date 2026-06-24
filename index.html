@@ -244,6 +244,13 @@
         .item-2 {
           flex-grow: 1;
         }
+        
+        .cropped-image {
+          width: 200px;         /* Set your target width */
+          height: 200px;        /* Set your target height */
+          object-fit: cover;    /* Scales and crops automatically */
+          object-position: center; /* Centers the crop zone (default) */
+        }
 
          .calendar {
             width: 380px; /* 微調寬度以容納多顆星 */
@@ -335,7 +342,7 @@
 
     <div class="container">
       <div>
-        <img src="https://chunwahyu.github.io/okae-home/uploads/today_hydration.png" alt="Today Hydration" style="width: 350px; height: auto;">
+        <img src="https://chunwahyu.github.io/okae-home/uploads/today_hydration.png" alt="Today Hydration" class="cropped-image">
       </div>
       <div>
         <img src="https://chunwahyu.github.io/okae-home/uploads/hydration_trend.png" alt="Hydration Trend" style="width: 350px; height: auto;">
@@ -343,11 +350,11 @@
     </div>
     
     <div style="text-align: center;">
-        <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_hours_chart.png" alt="Arduino Image" style="width: 350px; height: auto;">
+        <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_hours_chart.png" alt="Sleep hours chart" style="width: 350px; height: auto;">
     </div>
 
     <div style="text-align: center;">
-        <img src="https://chunwahyu.github.io/okae-home/uploads/Happiness Proxy Scoring Model2.png" alt="Arduino Image" style="width: 350px; height: auto;">
+        <img src="https://chunwahyu.github.io/okae-home/uploads/Happiness Proxy Scoring Model2.png" alt="Happiness Scoring System" style="width: 350px; height: auto;">
     </div>
 
     <!-- Main control buttons 
