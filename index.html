@@ -253,7 +253,7 @@
         }
 
          .calendar {
-            width: 240px; /* 微調寬度以容納多顆星 */
+            width: 240px; /* adjust to display more than one star */
             background: #fff;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             border-radius: 8px;
@@ -292,20 +292,20 @@
         .day {
             aspect-ratio: 1;
             display: flex;
-            flex-direction: column; /* 讓日期數字在上，星星在下 */
+            flex-direction: column; /* day on top, star at bottom */
             align-items: center;
             justify-content: center;
             position: relative;
             font-size: 0.9rem;
             border: 1px solid #fafafa;
         }
-        /* 星星容器樣式 */
+        
         .stars-container {
             color: #ffcc00;
-            font-size: 10px; /* 縮小星星字體以容納多顆 */
+            font-size: 10px; /* adjust size for more star */
             line-height: 1;
             margin-top: 2px;
-            letter-spacing: -1px; /* 讓星星靠緊一點 */
+            letter-spacing: -1px; /* reduce space */
         }
    
     </style>
@@ -331,32 +331,41 @@
 
     <div class="calendar">
         <div class="calendar-header" id="calendar-month-year">載入中...</div>
-        <div class="star-counter" id="total-stars-count"></div>
+        <div class="star-counter" id="total-stars-count">     
+    </div>
         
-        <div class="weekdays">
-            <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+    <div class="weekdays">
+        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
         </div>
         <div class="days" id="calendar-days"></div>
     </div>
     
-
-    <div class="container">
-      <div>
+    <div style="text-align: center;">
+        <br>
+        <hr>
+        <h2>Today Hydration</h2>
         <img src="https://chunwahyu.github.io/okae-home/uploads/today_hydration.png" alt="Today Hydration" class="cropped-image">
-      </div>
-      <div>
+    </div>
+
+    <div style="text-align: center;">
+        <br>
+        <h2>Daily Hydration Trend</h2>
         <img src="https://chunwahyu.github.io/okae-home/uploads/hydration_trend.png" alt="Hydration Trend" style="width: 350px; height: auto;">
-      </div>
+        <hr>
     </div>
     
     <div style="text-align: center;">
+        <br>
+        <h2>Sleep Hours Analysis</h2>
         <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_hours_chart.png" alt="Sleep hours chart" style="width: 350px; height: auto;">
     </div>
 
     <div style="text-align: center;">
+        <hr>
+        <br>
         <img src="https://chunwahyu.github.io/okae-home/uploads/Happiness Proxy Scoring Model2.png" alt="Happiness Scoring System" style="width: 350px; height: auto;">
     </div>
-
+    
     <!-- Main control buttons 
     <div class="btn-container">
         <button class="btn-on" onclick="sendHardwareCommand('ON')">Turn LED ON</button>
@@ -460,7 +469,7 @@
         
         fetch('https://chunwahyu.github.io/okae-home/uploads/star_records.csv')
             .then(response => {
-                if (!response.ok) throw new Error('無法讀取 CSV 檔案');
+                if (!response.ok) throw new Error('File not found');
                 return response.text();
             })
             .then(csvText => {
@@ -481,7 +490,7 @@
                         const [day, count] = item.split(':');
                         const starCount = parseInt(count);
                         starMap[parseInt(day)] = starCount;
-                        totalStarsCalculated += starCount; // 累加總星星數
+                        totalStarsCalculated += starCount; // accumulate stars
                     });
                 }
 
@@ -489,8 +498,8 @@
                 renderCalendar(year, month, starMap, totalStarsCalculated);
             })
             .catch(error => {
-                document.getElementById("calendar-month-year").innerText = "資料載入失敗";
-                console.error('錯誤:', error);
+                document.getElementById("calendar-month-year").innerText = "Failed to load data";
+                console.error('Error:', error);
             });
 
         function renderCalendar(year, month, starMap, totalStars) {
@@ -503,27 +512,27 @@
             const startDayOfWeek = new Date(year, month - 1, 1).getDay();
             const daysContainer = document.getElementById("calendar-days");
 
-            // 渲染前置空白格子
+            // render leading blank grids
             for (let i = 0; i < startDayOfWeek; i++) {
                 const blankSlot = document.createElement("div");
                 daysContainer.appendChild(blankSlot);
             }
 
-            // 渲染日期與星星
+            // Rendering date and stars
             for (let day = 1; day <= totalDays; day++) {
                 const daySquare = document.createElement("div");
                 daySquare.classList.add("day");
                 daySquare.innerText = day;
 
-                // 檢查這一天是否有星星設定
+                // Check if there are any star settings for the day
                 if (starMap[day]) {
                     const starCount = starMap[day];
                     
-                    // 建立一個專門放星星的 HTML 區塊
+                    // A special HTML block for displaying stars was created
                     const starsDiv = document.createElement("div");
                     starsDiv.classList.add("stars-container");
                     
-                    // 根據 CSV 設定的數量，重複產生文字 "★"
+                    // based on CSV to set quality，and make "★"
                     starsDiv.innerText = "★".repeat(starCount);
                     
                     daySquare.appendChild(starsDiv);
