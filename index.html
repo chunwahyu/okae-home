@@ -247,13 +247,18 @@
         
          .calendar {
             width: 350px; /* adjust to display more than one star */
-            background: #fff;
+            /* Use Telegram's secondary background, or fallback to white */
+            background: var(--tg-theme-secondary-bg-color, #ffffff);
+            /* Use Telegram's main text color, or fallback to dark gray */
+            color: var(--tg-theme-text-color, #222222);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             border-radius: 8px;
             overflow: hidden;
         }
         .calendar-header {
-            background: #333;
+            /* Use a color that contrasts well, or link color */
+            background: var(--tg-theme-button-color, #333333);
+            color: var(--tg-theme-button-text-color, #ffffff);
             color: #fff;
             padding: 15px 15px 5px 15px;
             text-align: center;
@@ -261,7 +266,7 @@
             font-weight: bold;
         }
         .star-counter {
-            background: #333;
+            background: var(--tg-theme-button-color, #333333);
             color: #ffcc00;
             text-align: center;
             font-size: 0.85rem;
@@ -271,7 +276,9 @@
         .weekdays {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            background: #eee;
+            /* Adaptive secondary background for header grid */
+            background: var(--tg-theme-bg-color, #eee);
+            color: var(--tg-theme-hint-color, #666);
             text-align: center;
             font-weight: bold;
             padding: 10px 0;
@@ -455,7 +462,7 @@
             modal.style.display = "block";
             modalImg.src = this.src;
             modalImg.alt = this.alt;
-            captionText.innerHTML = this.nextElementSibling.innerHTML;
+            captionText.innerHTML = this.nextElementSibling ? this.nextElementSibling.innerHTML : this.alt;
           }
         }
 
