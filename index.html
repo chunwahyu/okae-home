@@ -340,6 +340,11 @@
               .plain {
               color: lightgray;
             }
+            .earned-message {
+              font-size: 22px;
+              font-weight: bold;
+              margin-top: 15px;
+            }
    
     </style>
 </head>
@@ -363,11 +368,12 @@
     -->
 
     <div id="date"></div>
-    <div id="weekday"></div>
-    <div class="label">Your Happiness Score is:</div>
-    <div class="star-container">
-    <span id="star" class="star">&#9733;<span id="score" class="score"></span></span>
-    </div>
+      <div id="weekday"></div>
+      <div class="label">Your Happiness Score is:</div>
+      <div class="star-container">
+        <span id="star" class="star">&#9733;<span id="score" class="score"></span></span>
+      </div>
+      <div id="earned" class="earned-message"></div>
 
     <div class="calendar">
         <div class="calendar-header" id="calendar-month-year">載入中...</div>
@@ -590,29 +596,61 @@
             }
         }
 
-        // Get yesterday's date
-        const today = new Date();
-        const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
+        
+    // Get yesterday's date
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
 
-        // Format date and weekday
-        const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
-        const optionsWeekday = { weekday: 'long' };
-        document.getElementById("date").textContent = yesterday.toLocaleDateString(undefined, optionsDate);
-        document.getElementById("weekday").textContent = yesterday.toLocaleDateString(undefined, optionsWeekday);
+    // Format date and weekday
+    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+    const optionsWeekday = { weekday: 'long' };
+    document.getElementById("date").textContent = yesterday.toLocaleDateString(undefined, optionsDate);
+    document.getElementById("weekday").textContent = yesterday.toLocaleDateString(undefined, optionsWeekday);
 
-        // Example score
-        const scoreValue = 85; // change dynamically as needed
-        document.getElementById("score").textContent = scoreValue;
+    async function loadCSV() {
+      // Fetch CSV from uploads folder
+      const response = await fetch("https://chunwahyu.github.io/okae-home/uploads/happiness_scores.csv");
+      const text = await response.text();
+      const rows = text.trim().split("\n").map(r => r.split(","));
+      const data = rows.slice(1); // skip header
 
-        // Apply star color based on score
-        const starElement = document.getElementById("star");
+      // Yesterday in YYYY-MM-DD format
+      const yDateStr = yesterday.toISOString().split("T")[0];
+      const entry = data.find(row => row[0] === yDateStr);
+
+      const starElement = document.getElementById("star");
+      const scoreElement = document.getElementById("score");
+      const earnedElement = document.getElementById("earned");
+
+      if (entry) {
+        const scoreValue = parseInt(entry[1], 10);
+        const starEarned = parseInt(entry[2], 10);
+
+        // Show score inside star
+        scoreElement.textContent = scoreValue;
+
+        // Reset star color
+        starElement.classList.remove("yellow", "plain");
+
+        // Color star based on score
         if (scoreValue >= 80) {
           starElement.classList.add("yellow");
         } else {
           starElement.classList.add("plain");
         }
-        
+
+        // Show earned stars message
+        earnedElement.textContent = `You have earned ${starEarned} star${starEarned !== 1 ? "s" : ""}`;
+      } else {
+        scoreElement.textContent = "N/A";
+        starElement.classList.add("plain");
+        earnedElement.textContent = "No data found for yesterday";
+      }
+    }
+
+    loadCSV();
+                
     </script>
 </body>
 </html>
