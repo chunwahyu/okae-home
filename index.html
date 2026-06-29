@@ -311,40 +311,40 @@
          #date, #weekday {
               margin-bottom: 10px; /* spacing between date and weekday */
               font-size: 20px;
-            }
-            .label {
-              margin: 30px 0 20px 0; /* spacing above and below the label */
-              font-size: 24px;
-              font-weight: bold;
-              color: #333;
-            }
-            .star {
-              font-size: 250px; /* Huge star */
-              line-height: 1;
-              display: inline-block;
-              position: relative;
-              margin-bottom: 40px; /* spacing below the star */
-            }
-            .score {
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%); /* Perfect centering */
-              font-size: 70px; /* Big score text */
-              font-weight: bold;
-              color: black;
-            }
-            .yellow {
-              color: gold;
-            }
-              .plain {
-              color: lightgray;
-            }
-            .earned-message {
-              font-size: 22px;
-              font-weight: bold;
-              margin-top: 15px;
-            }
+        }
+         .label {
+             margin: 30px 0 20px 0; /* spacing above and below the label */
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--tg-theme-hint-color, #666);
+        }
+        .star {
+            font-size: 250px; /* Huge star */
+            line-height: 1;
+            display: inline-block;
+            position: relative;
+            margin-bottom: 40px; /* spacing below the star */
+        }
+        .score {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+             transform: translate(-50%, -50%); /* Perfect centering */
+             font-size: 70px; /* Big score text */
+             font-weight: bold;
+             color: black;
+        }
+        .yellow {
+            color: gold;
+          }
+          .plain {
+             color: lightgray;
+          }
+        .earned-message {
+            font-size: 22px;
+             font-weight: bold;
+          margin-top: 15px;
+        }
    
     </style>
 </head>
@@ -368,12 +368,13 @@
     -->
 
     <div id="date"></div>
-      <div id="weekday"></div>
-      <div class="label">Your Happiness Score is:</div>
-      <div class="star-container">
-        <span id="star" class="star">&#9733;<span id="score" class="score"></span></span>
-      </div>
-      <div id="earned" class="earned-message"></div>
+    <div id="weekday"></div>
+    <div class="label">Your Happiness Score is:</div>
+    <div class="star-container">
+    <span id="star" class="star">&#9733;<span id="score" class="score"></span></span>
+    </div>
+    <div id="earned" class="earned-message"></div>
+    <br>
 
     <div class="calendar">
         <div class="calendar-header" id="calendar-month-year">載入中...</div>
