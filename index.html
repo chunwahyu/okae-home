@@ -307,6 +307,39 @@
             margin-top: 2px;
             letter-spacing: -1px; /* reduce space */
         }
+
+         #date, #weekday {
+              margin-bottom: 10px; /* spacing between date and weekday */
+              font-size: 20px;
+            }
+            .label {
+              margin: 30px 0 20px 0; /* spacing above and below the label */
+              font-size: 24px;
+              font-weight: bold;
+              color: #333;
+            }
+            .star {
+              font-size: 250px; /* Huge star */
+              line-height: 1;
+              display: inline-block;
+              position: relative;
+              margin-bottom: 40px; /* spacing below the star */
+            }
+            .score {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%); /* Perfect centering */
+              font-size: 70px; /* Big score text */
+              font-weight: bold;
+              color: black;
+            }
+            .yellow {
+              color: gold;
+            }
+              .plain {
+              color: lightgray;
+            }
    
     </style>
 </head>
@@ -328,6 +361,13 @@
         <input type="text" id="tunnel-url" placeholder="https://your-ngrok-or-localtunnel-url.app">
     </div>
     -->
+
+    <div id="date"></div>
+    <div id="weekday"></div>
+    <div class="label">Your Happiness Score is:</div>
+    <div class="star-container">
+    <span id="star" class="star">&#9733;<span id="score" class="score"></span></span>
+    </div>
 
     <div class="calendar">
         <div class="calendar-header" id="calendar-month-year">載入中...</div>
@@ -550,7 +590,28 @@
             }
         }
 
-        
+        // Get yesterday's date
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+
+        // Format date and weekday
+        const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+        const optionsWeekday = { weekday: 'long' };
+        document.getElementById("date").textContent = yesterday.toLocaleDateString(undefined, optionsDate);
+        document.getElementById("weekday").textContent = yesterday.toLocaleDateString(undefined, optionsWeekday);
+
+        // Example score
+        const scoreValue = 85; // change dynamically as needed
+        document.getElementById("score").textContent = scoreValue;
+
+        // Apply star color based on score
+        const starElement = document.getElementById("star");
+        if (scoreValue >= 80) {
+          starElement.classList.add("yellow");
+        } else {
+          starElement.classList.add("plain");
+        }
         
     </script>
 </body>
