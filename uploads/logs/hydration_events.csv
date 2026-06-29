@@ -44,3 +44,5 @@ timestamp,event_type,amount_ml,today_intake_ml,today_drink_events,home_sensor_in
 2026-06-29T14:55:30+08:00,undo_drink,-202,1373,7,1373,0,0.0,0.0,0,False,1086,AHEAD,287,34.3,30.0,20.0,0.0,84.3,Hardware undo last false drink,hardware_button,MCU total decreased after hardware undo
 2026-06-29T16:04:43+08:00,drink,111,1099,6,1099,0,110.8,263.8,5,True,1242,ON_TRACK,-143,27.5,30.0,20.0,77.5,✅ Safe pace,mcu_delta,Home sensor drink
 2026-06-29T16:05:14+08:00,undo_drink,-111,988,5,988,0,0.0,263.8,0,True,1244,BEHIND,-256,24.7,28.4,20.0,73.1,Hardware undo last false drink,hardware_button,MCU total decreased after hardware undo
+2026-06-29T20:00:09+08:00,drink,228,831,5,831,0,227.9,79.2,11,True,1800,FAR_BEHIND,-969,20.8,15.6,20.0,56.4,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-29T20:00:57+08:00,undo_drink,-228,603,4,603,0,0.0,79.9,0,True,1800,FAR_BEHIND,-1197,15.1,11.3,16.0,42.4,Hardware undo last false drink,hardware_button,MCU total decreased after hardware undo
