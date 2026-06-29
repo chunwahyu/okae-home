@@ -1,0 +1,49 @@
+timestamp,event_type,amount_ml,today_intake_ml,today_drink_events,home_sensor_intake_ml,manual_intake_ml,mcu_total_drank_ml,mcu_water_left_ml,mcu_progress_percent,mcu_ready,expected_now_ml,rhythm_status,rhythm_gap_ml,completion_score,rhythm_score,distribution_score,late_control_score,score,safety_note,data_source,note
+timestamp,event_type,amount_ml,today_intake_ml,today_drink_events,home_sensor_intake_ml,manual_intake_ml,mcu_total_drank_ml,mcu_water_left_ml,mcu_progress_percent,mcu_ready,expected_now_ml,rhythm_status,rhythm_gap_ml,completion_score,rhythm_score,distribution_score,late_control_score,score,safety_note,data_source,note
+2026-06-23T08:05:00+08:00,drink,245,245,1,245,0,245.3,555.0,12,True,13,AHEAD,232,6.1,30.0,0.0,0.0,36.1,✅ Safe pace,mcu_delta,False positive test drink
+2026-06-23T08:06:00+08:00,undo_drink,-245,0,0,0,0,0.3,555.0,0,True,15,ON_TRACK,-15,0.0,0.0,0.0,0.0,0.0,Hardware undo last false drink,hardware_button,MCU total decreased after hardware undo
+2026-06-23T08:30:00+08:00,drink,280,280,1,280,0,280.5,275.0,14,True,75,AHEAD,205,7.0,30.0,0.0,0.0,37.0,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-23T10:30:00+08:00,drink,300,580,2,580,0,580.3,650.0,29,True,375,AHEAD,205,14.5,30.0,6.0,0.0,50.5,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-23T12:30:00+08:00,drink,300,880,3,580,300,580.3,650.0,29,True,683,ON_TRACK,197,22.0,30.0,12.0,0.0,64.0,✅ Safe pace,manual,Manual drink while away
+2026-06-23T15:15:00+08:00,drink,330,1210,4,910,300,910.1,320.0,46,True,1133,ON_TRACK,77,30.2,30.0,16.0,0.0,76.2,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-23T18:30:00+08:00,drink,330,1540,5,1240,300,1240.3,650.0,62,True,1575,ON_TRACK,-35,38.5,30.0,20.0,0.0,88.5,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-24T08:30:00+08:00,drink,320,320,1,320,0,320.2,480.0,16,True,75,AHEAD,245,8.0,30.0,0.0,0.0,38.0,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-24T10:30:00+08:00,drink,320,640,2,320,320,320.2,480.0,16,True,375,AHEAD,265,16.0,30.0,6.0,0.0,52.0,✅ Safe pace,manual,Manual drink while away
+2026-06-24T12:30:00+08:00,drink,330,970,3,650,320,650.4,800.0,33,True,683,AHEAD,287,24.2,30.0,12.0,0.0,66.2,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-24T15:15:00+08:00,drink,330,1300,4,980,320,980.2,470.0,49,True,1133,ON_TRACK,167,32.5,30.0,16.0,0.0,78.5,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-24T18:30:00+08:00,drink,348,1648,5,1328,320,1328.4,772.0,66,True,1575,ON_TRACK,73,41.2,30.0,20.0,0.0,91.2,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-25T08:30:00+08:00,drink,280,280,1,280,0,280.2,520.0,14,True,75,AHEAD,205,7.0,30.0,0.0,0.0,37.0,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-25T10:30:00+08:00,drink,300,580,2,580,0,580.0,220.0,29,True,375,AHEAD,205,14.5,30.0,6.0,0.0,50.5,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-25T12:30:00+08:00,drink,300,880,3,580,300,580.0,220.0,29,True,683,ON_TRACK,197,22.0,30.0,12.0,0.0,64.0,✅ Safe pace,manual,Manual drink while away
+2026-06-25T15:15:00+08:00,drink,330,1210,4,580,630,580.0,220.0,29,True,1133,ON_TRACK,77,30.2,30.0,16.0,0.0,76.2,✅ Safe pace,manual,Manual drink while away
+2026-06-25T18:30:00+08:00,drink,262,1472,5,842,630,842.2,650.0,42,True,1575,ON_TRACK,-103,36.8,30.0,20.0,0.0,86.8,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-26T08:30:00+08:00,drink,350,350,1,350,0,350.2,450.0,18,True,75,AHEAD,275,8.8,30.0,0.0,0.0,38.8,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-26T10:30:00+08:00,drink,350,700,2,700,0,700.0,750.0,35,True,375,AHEAD,325,17.5,30.0,6.0,0.0,53.5,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-26T12:30:00+08:00,drink,350,1050,3,1050,0,1050.2,400.0,53,True,683,AHEAD,367,26.2,30.0,12.0,0.0,68.2,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-26T13:05:00+08:00,drink,280,1330,4,1330,0,1330.5,770.0,67,True,781,AHEAD,549,33.2,30.0,16.0,0.0,79.2,✅ Safe pace,mcu_delta,False positive test drink
+2026-06-26T13:06:00+08:00,undo_drink,-280,1050,3,1050,0,1050.5,770.0,53,True,783,AHEAD,267,26.2,30.0,12.0,0.0,68.2,Hardware undo last false drink,hardware_button,MCU total decreased after hardware undo
+2026-06-26T15:15:00+08:00,drink,350,1400,4,1050,350,1050.5,770.0,53,True,1133,AHEAD,267,35.0,30.0,16.0,0.0,81.0,✅ Safe pace,manual,Manual drink while away
+2026-06-26T18:30:00+08:00,drink,360,1760,5,1410,350,1410.7,410.0,71,True,1575,ON_TRACK,185,44.0,30.0,20.0,0.0,94.0,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-27T08:30:00+08:00,drink,300,300,1,0,300,0.0,800.0,0,True,75,AHEAD,225,7.5,30.0,0.0,0.0,37.5,✅ Safe pace,manual,Manual drink while away
+2026-06-27T10:30:00+08:00,drink,310,610,2,310,300,309.8,490.0,15,True,375,AHEAD,235,15.2,30.0,6.0,0.0,51.2,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-27T12:30:00+08:00,drink,310,920,3,310,610,309.8,490.0,15,True,683,AHEAD,237,23.0,30.0,12.0,0.0,65.0,✅ Safe pace,manual,Manual drink while away
+2026-06-27T15:15:00+08:00,drink,330,1250,4,640,610,639.6,160.0,32,True,1133,ON_TRACK,117,31.2,30.0,16.0,0.0,77.2,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-27T18:30:00+08:00,drink,330,1580,5,970,610,969.8,650.0,48,True,1575,ON_TRACK,5,39.5,30.0,20.0,0.0,89.5,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-28T08:30:00+08:00,drink,320,320,1,320,0,320.2,480.0,16,True,75,AHEAD,245,8.0,30.0,0.0,0.0,38.0,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-28T10:30:00+08:00,drink,330,650,2,650,0,650.0,800.0,32,True,375,AHEAD,275,16.2,30.0,6.0,0.0,52.2,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-28T12:30:00+08:00,drink,340,990,3,650,340,650.0,800.0,32,True,683,AHEAD,307,24.8,30.0,12.0,0.0,66.8,✅ Safe pace,manual,Manual drink while away
+2026-06-28T15:15:00+08:00,drink,350,1340,4,1000,340,999.8,450.0,50,True,1133,AHEAD,207,33.5,30.0,16.0,0.0,79.5,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-28T16:05:00+08:00,drink,310,1650,5,1310,340,1310.1,790.0,66,True,1244,AHEAD,406,41.2,30.0,20.0,0.0,91.2,✅ Safe pace,mcu_delta,False positive test drink
+2026-06-28T16:06:00+08:00,undo_drink,-310,1340,4,1000,340,1000.1,790.0,50,True,1247,ON_TRACK,93,33.5,30.0,16.0,0.0,79.5,Hardware undo last false drink,hardware_button,MCU total decreased after hardware undo
+2026-06-28T18:30:00+08:00,drink,352,1692,5,1000,692,1000.1,790.0,50,True,1575,ON_TRACK,117,42.3,30.0,20.0,0.0,92.3,✅ Safe pace,manual,Manual drink
+2026-06-29T07:55:27+08:00,drink,206,306,1,306,0,305.9,0.0,15,True,0,AHEAD,306,7.6,30.0,0.0,0.0,37.6,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-29T09:59:41+08:00,drink,145,551,2,551,0,550.7,60.6,27,True,0,AHEAD,551,13.8,30.0,6.0,0.0,49.8,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-29T12:05:06+08:00,drink,55,906,3,906,0,905.9,60.7,45,True,0,AHEAD,906,22.7,30.0,12.0,0.0,64.7,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-29T13:46:03+08:00,drink,197,1103,4,1103,0,196.8,187.9,9,True,894,AHEAD,209,27.6,30.0,16.0,0.0,73.6,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-29T14:54:50+08:00,drink,202,1575,8,1575,0,202.2,1.6,10,True,1083,AHEAD,492,39.4,30.0,20.0,0.0,89.4,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-29T14:55:30+08:00,undo_drink,-202,1373,7,1373,0,0.0,0.0,0,False,1086,AHEAD,287,34.3,30.0,20.0,0.0,84.3,Hardware undo last false drink,hardware_button,MCU total decreased after hardware undo
+2026-06-29T16:04:43+08:00,drink,111,1099,6,1099,0,110.8,263.8,5,True,1242,ON_TRACK,-143,27.5,30.0,20.0,77.5,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-29T16:05:14+08:00,undo_drink,-111,988,5,988,0,0.0,263.8,0,True,1244,BEHIND,-256,24.7,28.4,20.0,73.1,Hardware undo last false drink,hardware_button,MCU total decreased after hardware undo
+2026-06-29T16:05:50+08:00,drink,374,1362,6,1362,0,374.5,0.0,18,True,1244,ON_TRACK,118,34.1,30.0,20.0,84.1,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-29T17:00:00+08:00,drink,64,1041,6,1041,0,64.2,0.8,3,True,1367,BEHIND,-326,26.0,26.8,20.0,72.8,✅ Safe pace,mcu_delta,Home sensor drink
+2026-06-29T17:08:30+08:00,drink,309,1350,7,1350,0,309.1,0.0,15,True,1384,ON_TRACK,-34,33.8,30.0,20.0,83.8,✅ Safe pace,mcu_delta,Home sensor drink
