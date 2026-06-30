@@ -2,526 +2,458 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Okae-Home</title>
     <!-- Include the official Telegram WebApp JavaScript SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <style>
-        /* Automatically adapts UI colors to match the user's Telegram theme */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #222222);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 80vh;
-        }
-
-        h2 {
-            margin-bottom: 5px;
-            color: var(--tg-theme-hint-color, #555555);
-        }
-
-        .user-greeting {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 25px;
-            color: var(--tg-theme-link-color, #2481cc);
-        }
-
-        .config-box {
-            width: 90%;
-            max-width: 350px;
-            margin-bottom: 30px;
-            text-align: left;
-        }
-
-        label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--tg-theme-hint-color, #999999);
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            box-sizing: border-box;
-            border: 1px solid var(--tg-theme-hint-color, #ccc);
-            background-color: var(--tg-theme-secondary-bg-color, #f5f5f5);
-            color: var(--tg-theme-text-color, #000);
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .btn-container {
-            width: 100%;
-            max-width: 350px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        button {
-            width: 100%;
-            padding: 16px;
-            font-size: 18px;
-            font-weight: 600;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: transform 0.1s ease, opacity 0.2s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        button:active {
-            transform: scale(0.98);
-            opacity: 0.9;
-        }
-
-        .btn-on {
-            background-color: #34c759; /* iOS Green */
-            color: white;
-        }
-
-        .btn-off {
-            background-color: #ff3b30; /* iOS Red */
-            color: white;
-        }
-
-        #status-message {
-            margin-top: 20px;
-            font-size: 14px;
-            color: var(--tg-theme-hint-color, #777777);
-            text-align: center;
-        }
-
-        /* The Image Box */
-        div.img {
-          border: 1px solid #ccc;
-        }
-
-        div.img:hover {
-          border: 1px solid #777;
-        }
-
-        /* The Image */
-        div.img img {
-          width: 100%;
-          height: auto;
-          cursor: pointer;
-        }
-
-        /* Description of Image */
-        div.desc {
-          padding: 15px;
-          text-align: center;
+        /* Base Configuration & CSS Custom Variables */
+        :root {
+            --tg-theme-bg-color: #ffffff;
+            --tg-theme-secondary-bg-color: #f1f5f9;
+            --tg-theme-text-color: #1e293b;
+            --tg-theme-hint-color: #64748b;
+            --tg-theme-link-color: #3b82f6;
+            --tg-theme-button-color: #2563eb;
+            --tg-theme-button-text-color: #ffffff;
+            
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --star-gold: #f59e0b;
+            --star-gray: #cbd5e1;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --transition: all 0.2s ease;
         }
 
         * {
-          box-sizing: border-box;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Add Responsiveness */
-        .responsive {
-          padding: 0 6px;
-          float: left;
-          width: 24.99999%;
-        }
-
-        /* The Modal (background) */
-        .modal {
-          display: none; /* Hidden by default */
-          position: fixed; /* Stay in place */
-          z-index: 1; /* Sit on top */
-          padding-top: 100px; /* Location of the box */
-          left: 0;
-          top: 0;
-          width: 100%; /* Full width */
-          height: 100%; /* Full height */
-          overflow: auto; /* Enable scroll if needed */
-          background-color: rgb(0,0,0); /* Fallback color */
-          background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-        }
-
-        /* Modal Content (image) */
-        .modal-content {
-          margin: auto;
-          display: block;
-          width: 80%;
-          max-width: 700px;
-        }
-
-        /* Caption of Modal Image */
-        #caption {
-          margin: auto;
-          display: block;
-          width: 80%;
-          max-width: 700px;
-          text-align: center;
-          color: #ccc;
-          padding: 10px 0;
-          height: 150px;
-        }
-
-        /* Add Animation */
-        .modal-content, #caption {  
-          -webkit-animation-name: zoom;
-          -webkit-animation-duration: 0.6s;
-          animation-name: zoom;
-          animation-duration: 0.6s;
-        }
-
-        @-webkit-keyframes zoom {
-          from {transform:scale(0)} 
-          to {transform:scale(1)}
-        }
-
-        @keyframes zoom {
-          from {transform:scale(0.1)} 
-          to {transform:scale(1)}
-        }
-
-        /* The Close Button */
-        .close {
-          position: absolute;
-          top: 15px;
-          right: 35px;
-          color: #f1f1f1;
-          font-size: 40px;
-          font-weight: bold;
-          transition: 0.3s;
-        }
-
-        .close:hover,
-        .close:focus {
-          color: #bbb;
-          text-decoration: none;
-          cursor: pointer;
-        }
-
-        /* Responsive Columns */
-        @media only screen and (max-width: 700px){
-          .responsive {
-            width: 49.99999%;
-            margin: 6px 0;
-          }
-          .modal-content {
-            width: 100%;
-          }
-        }
-
-        @media only screen and (max-width: 500px){
-          .responsive {
-            width: 100%;
-          }
-        }
-
-        /* Clear Floats */
-        .clearfix:after {
-          content: "";
-          display: table;
-          clear: both;
-        }
-
-        .container {
-          display: flex;
-          flex-direction: row;
-          flex-wrap: nowrap;
-          justify-content: center;
-          align-items: stretch;
-          align-content: stretch;
-          gap: 8px;
-        }
-
-        .item-2 {
-          flex-grow: 1;
-        }
-        
-         .calendar {
-            width: 350px; /* adjust to display more than one star */
-            /* Use Telegram's secondary background, or fallback to white */
-            background: var(--tg-theme-secondary-bg-color, #ffffff);
-            /* Use Telegram's main text color, or fallback to dark gray */
-            color: var(--tg-theme-text-color, #222222);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .calendar-header {
-            /* Use a color that contrasts well, or link color */
-            background: var(--tg-theme-button-color, #333333);
-            color: var(--tg-theme-button-text-color, #ffffff);
-            color: #fff;
-            padding: 15px 15px 5px 15px;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-        .star-counter {
-            background: var(--tg-theme-button-color, #333333);
-            color: #ffcc00;
-            text-align: center;
-            font-size: 0.85rem;
-            padding-bottom: 15px;
-            font-weight: 500;
-        }
-        .weekdays {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            /* Adaptive secondary background for header grid */
-            background: var(--tg-theme-bg-color, #eee);
-            color: var(--tg-theme-hint-color, #666);
-            text-align: center;
-            font-weight: bold;
-            padding: 10px 0;
-            font-size: 0.8rem;
-        }
-        .days {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            padding: 10px;
-        }
-        .day {
-            aspect-ratio: 1;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color);
+            color: var(--tg-theme-text-color);
+            /* Adaptive padding to respect mobile chin safety areas and sticky header */
+            padding: 80px 12px calc(20px + env(safe-area-inset-bottom)) 12px;
             display: flex;
-            flex-direction: column; /* day on top, star at bottom */
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            position: relative;
-            font-size: 0.9rem;
-            border: 1px solid #fafafa;
-        }
-        
-        .stars-container {
-            color: #ffcc00;
-            font-size: 10px; /* adjust size for more star */
-            line-height: 1;
-            margin-top: 2px;
-            letter-spacing: -1px; /* reduce space */
+            min-height: 100vh;
+            line-height: 1.4;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
         }
 
-         #date, #weekday {
-              margin-bottom: 10px; /* spacing between date and weekday */
-              font-size: 20px;
+        /* --- STICKY ALWAYS ON TOP HEADER --- */
+        .sticky-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            padding-top: env(safe-area-inset-top);
+            height: calc(60px + env(safe-area-inset-top));
         }
-         .label {
-             margin: 30px 0 20px 0; /* spacing above and below the label */
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--tg-theme-hint-color, #666);
+
+        /* Support Telegram Dark Theme fallback for header */
+        @media (prefers-color-scheme: dark) {
+            .sticky-header {
+                background-color: rgba(30, 41, 59, 0.85);
+            }
         }
+
+        .header-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-logo {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            border-radius: var(--radius-sm);
+        }
+
+        .header-title-wrapper {
+            flex-grow: 1;
+        }
+
+        .header-title-wrapper h1 {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .user-greeting {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--tg-theme-link-color);
+        }
+
+        /* --- DASHBOARD MAIN CONTAINER --- */
+        .dashboard-content {
+            width: 100%;
+            max-width: 480px; /* Adapts cleanly across all smartphone viewport profiles */
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* --- CARDS ARCHITECTURE --- */
+        .card {
+            background-color: var(--tg-theme-bg-color);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 16px;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--tg-theme-hint-color);
+            margin-bottom: 12px;
+        }
+
+        /* --- HERO SCORE SECTION --- */
+        .hero-card {
+            background: linear-gradient(135deg, var(--tg-theme-bg-color) 0%, var(--tg-theme-secondary-bg-color) 100%);
+            border: none;
+            padding: 20px 16px;
+        }
+
+        .date-badge {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--tg-theme-hint-color);
+        }
+
+        .weekday-badge {
+            font-size: 11px;
+            color: var(--tg-theme-hint-color);
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .star-container {
+            display: inline-block;
+            position: relative;
+            margin: 0;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        /* Responsive star scaling based directly on smartphone screen widths */
         .star {
-            font-size: 250px; /* Huge star */
+            font-size: 42vw;
+            /* Clamp ensures it scales fluidly on mobile screens up to a max dimension of 170px */
+            font-size: clamp(120px, 42vw, 170px); 
             line-height: 1;
             display: inline-block;
             position: relative;
-            margin-bottom: 40px; /* spacing below the star */
         }
+
         .score {
             position: absolute;
-            top: 50%;
+            top: 55%;
             left: 50%;
-             transform: translate(-50%, -50%); /* Perfect centering */
-             font-size: 70px; /* Big score text */
-             font-weight: bold;
-             color: black;
+            transform: translate(-50%, -50%);
+            font-size: clamp(32px, 10vw, 42px);
+            font-weight: 800;
+            color: #1e293b;
         }
-        .yellow {
-            color: gold;
-          }
-          .plain {
-             color: lightgray;
-          }
+
+        .yellow { color: var(--star-gold); }
+        .plain { color: var(--star-gray); }
+
         .earned-message {
-            font-size: 22px;
-             font-weight: bold;
-          margin-top: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--tg-theme-text-color);
+            background: rgba(255, 255, 255, 0.7);
+            padding: 6px 14px;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+            margin-top: -4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
-   
+
+        /* --- CALENDAR MINI-APP COMPONENT --- */
+        .calendar {
+            width: 100%;
+            background: var(--tg-theme-secondary-bg-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .calendar-header {
+            background: var(--tg-theme-button-color);
+            color: var(--tg-theme-button-text-color);
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .star-counter {
+            background: var(--tg-theme-button-color);
+            color: #ffd700;
+            text-align: center;
+            font-size: 11px;
+            padding-bottom: 12px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: rgba(0, 0, 0, 0.03);
+            color: var(--tg-theme-hint-color);
+            text-align: center;
+            font-weight: 700;
+            padding: 6px 0;
+            font-size: 11px;
+        }
+
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            padding: 6px;
+            gap: 4px;
+            background: var(--tg-theme-bg-color);
+        }
+
+        .day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            background: var(--tg-theme-secondary-bg-color);
+            color: var(--tg-theme-text-color);
+        }
+        
+        .stars-container {
+            color: var(--star-gold);
+            font-size: 7px;
+            line-height: 1;
+            margin-top: 1px;
+            letter-spacing: -0.5px;
+        }
+
+        /* --- CHARTS IMAGE MEDIA BOXES --- */
+        .chart-img {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            display: block;
+        }
+
+        /* --- MODAL DIALOG DISPLAY --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 200;
+            padding-top: calc(40px + env(safe-area-inset-top));
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 92%;
+            border-radius: var(--radius-md);
+        }
+
+        #caption {
+            margin: auto;
+            display: block;
+            width: 85%;
+            text-align: center;
+            color: #f8fafc;
+            padding: 16px 0;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .modal-content, #caption {  
+            animation: zoom 0.25s ease-out;
+        }
+
+        @keyframes zoom {
+            from { transform: scale(0.95); opacity: 0; } 
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close {
+            position: absolute;
+            top: calc(12px + env(safe-area-inset-top));
+            right: 16px;
+            color: #94a3b8;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div>
-            <img src="https://chunwahyu.github.io/okae-home/uploads/okae-home logo.avif" alt="Okae-Home" style="width: 130px; height: auto;">
+    <!-- Sticky Floating Header with iOS/Android notch protection styling constraints -->
+    <header class="sticky-header">
+        <div class="header-container">
+            <img src="https://chunwahyu.github.io/okae-home/uploads/okae-home logo.avif" alt="Okae-Home" class="header-logo">
+            <div class="header-title-wrapper">
+                <h1>Okae-Home Dashboard</h1>
+                <div class="user-greeting" id="greeting">Hello, Explorer!</div>
+            </div>
         </div>
-        <div class="item-2"><h1>Okae-Home Dashboard</h1></div>
-    </div>
-    
-    <!-- This will dynamically greet the user using Telegram data -->
-    <div class="user-greeting" id="greeting">Hello, Explorer!</div>
+    </header>
 
-    <!-- Configuration box to easily update your tunnel URL without editing code 
-    <div class="config-box">
-        <label for="tunnel-url">Arduino Backend URL:</label>
-        <input type="text" id="tunnel-url" placeholder="https://your-ngrok-or-localtunnel-url.app">
-    </div>
-    -->
+    <!-- Smartphone Form Factor Viewport Container -->
+    <main class="dashboard-content">
 
-    <div id="date"></div>
-    <div id="weekday"></div>
-    <div class="label">Your Happiness Score is:</div>
-    <div class="star-container">
-    <span id="star" class="star">&#9733;<span id="score" class="score"></span></span>
-    </div>
-    <div id="earned" class="earned-message"></div>
-    <br>
+        <!-- Yesterday Core Matrix Summary Grid Card -->
+        <section class="card hero-card">
+            <div id="date" class="date-badge">---</div>
+            <div id="weekday" class="weekday-badge">---</div>
+            <div class="card-title" style="margin-bottom:0; font-size: 11px;">Happiness Proxy Score</div>
+            
+            <div class="star-container">
+                <span id="star" class="star">&#9733;<span id="score" class="score"></span></span>
+            </div>
+            <div>
+                <div id="earned" class="earned-message">---</div>
+            </div>
+        </section>
 
-    <div class="calendar">
-        <div class="calendar-header" id="calendar-month-year">載入中...</div>
-        <div class="star-counter" id="total-stars-count">     
-    </div>
+        <!-- Metric Calendar Grid System -->
+        <section class="calendar">
+            <div class="calendar-header" id="calendar-month-year">載入中...</div>
+            <div class="star-counter" id="total-stars-count"></div>
+            <div class="weekdays">
+                <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+            </div>
+            <div class="days" id="calendar-days"></div>
+        </section>
         
-    <div class="weekdays">
-        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
-        </div>
-        <div class="days" id="calendar-days"></div>
-    </div>
-    
-    <div style="text-align: center;">
-        <br>
-        <hr>
-        <h2>Today Hydration</h2>
-        <img src="https://chunwahyu.github.io/okae-home/uploads/charts/today_hydration.png" alt="Today Hydration" style="width: 350px; height: auto;">
-    </div>
+        <!-- Hydration Monitoring Node Container -->
+        <section class="card">
+            <div class="card-title">Today Hydration</div>
+            <img src="https://chunwahyu.github.io/okae-home/uploads/charts/today_hydration.png" alt="Today Hydration" class="chart-img">
+        </section>
 
-    <div style="text-align: center;">
-        <br>
-        <h2>Weekly Intake</h2>
-        <img src="https://chunwahyu.github.io/okae-home/uploads/charts/weekly_intake.png" alt="Weekly Intake" style="width: 350px; height: auto;">
-        <br>
-        <hr>
-    </div>
+        <!-- Intake Analytics Section -->
+        <section class="card">
+            <div class="card-title">Weekly Intake</div>
+            <img src="https://chunwahyu.github.io/okae-home/uploads/charts/weekly_intake.png" alt="Weekly Intake" class="chart-img">
+        </section>
 
-    <div style="text-align: center;">
-        <br>
-        <h2>Sleep Quality Analysis</h2>
-        <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_quality_chart.png" alt="Sleep quality chart" style="width: 350px; height: auto;">
-    </div>
-    
-    <div style="text-align: center;">
-        <h2>Sleep Hours Analysis</h2>
-        <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_hours_chart.png" alt="Sleep hours chart" style="width: 350px; height: auto;">
-        <br>
-        <hr>
-    </div>
+        <!-- Sleep Tracking Section Quality -->
+        <section class="card">
+            <div class="card-title">Sleep Quality Analysis</div>
+            <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_quality_chart.png" alt="Sleep quality chart" class="chart-img">
+        </section>
+        
+        <!-- Sleep Tracking Section Duration -->
+        <section class="card">
+            <div class="card-title">Sleep Hours Analysis</div>
+            <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_hours_chart.png" alt="Sleep hours chart" class="chart-img">
+        </section>
 
-    <div style="text-align: center;">
-        <br>
-        <img src="https://chunwahyu.github.io/okae-home/uploads/Happiness Proxy Scoring Model2.png" alt="Happiness Scoring System" style="width: 350px; height: auto;">
-        <br>
-    </div>
-    
-    <!-- Main control buttons 
-    <div class="btn-container">
-        <button class="btn-on" onclick="sendHardwareCommand('ON')">Turn LED ON</button>
-        <button class="btn-off" onclick="sendHardwareCommand('OFF')">Turn LED OFF</button>
-    </div>
+        <!-- Scoring Calibration Parameter Framework Diagram -->
+        <section class="card">
+            <div class="card-title">Scoring Topology Framework</div>
+            <img src="https://chunwahyu.github.io/okae-home/uploads/Happiness Proxy Scoring Model2.png" alt="Happiness Scoring System" class="chart-img">
+        </section>
 
-    <p id="status-message">Awaiting command...</p>
+    </main>
 
-    -->
-
-    <!-- The Modal -->
+    <!-- Image Expansion Dialog Viewport -->
     <div id="myModal" class="modal">
-      <span class="close">×</span>
-      <img class="modal-content" id="img01">
-      <div id="caption"></div>
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
     </div>
     
     <script>
-        // 1. Initialize Telegram WebApp SDK
+        // 1. Initialize Telegram WebApp SDK Integration Layers
         const tg = window.Telegram.WebApp;
-        tg.ready(); // Alerts Telegram that the app is fully loaded
-        tg.expand(); // Expands the Mini App to full-screen height inside the chat
+        tg.ready(); 
+        tg.expand(); 
 
-        // 2. Personalize the UI using Telegram's built-in user data
-        const statusText = document.getElementById('status-message');
+        // 2. Personalize User Interface Greetings Context Strings
         const greetingText = document.getElementById('greeting');
-        
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             greetingText.innerText = `Hello, ${tg.initDataUnsafe.user.first_name}! 👋`;
         }
 
-        // 3. Main function to transmit commands to your Arduino UNO Q over Wi-Fi
-        async function sendHardwareCommand(action) {
-            const baseUrl = document.getElementById('tunnel-url').value.trim();
-            
-            if (!baseUrl) {
-                statusText.innerText = "❌ Please enter your Arduino Backend URL first!";
-                statusText.style.color = "#ff3b30";
-                tg.HapticFeedback.notificationOccurred('error'); // Triggers physical phone vibration
-                return;
-            }
-
-            statusText.innerText = `Sending continuous request to turn ${action}...`;
-            statusText.style.color = "var(--tg-theme-hint-color, #777777)";
-
-            try {
-                // Strip trailing slash if the user pasted one by mistake
-                const sanitizedUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
-
-                const response = await fetch(`${sanitizedUrl}/led`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ status: action })
-                });
-
-                if (response.ok) {
-                    statusText.innerText = `✅ Success! Arduino LED is ${action}.`;
-                    statusText.style.color = "#34c759";
-                    tg.HapticFeedback.notificationOccurred('success'); // Soft success haptic vibration
-                } else {
-                    statusText.innerText = `⚠️ Server Error: ${response.status}`;
-                    statusText.style.color = "#ff9500";
-                    tg.HapticFeedback.notificationOccurred('warning');
-                }
-            } catch (error) {
-                console.error(error);
-                statusText.innerText = "❌ Connection Failed. Check your URL or board status.";
-                statusText.style.color = "#ff3b30";
-                tg.HapticFeedback.notificationOccurred('error');
-            }
-        }
-
-        // Get the modal
+        // 3. Modal Native Expansion Dialog Engines
         var modal = document.getElementById('myModal');
-
-        // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
 
-        // When the user clicks on <span> (x), close the modal
         span.onclick = function() { 
           modal.style.display = "none";
         }
 
-        // Get all images and insert the clicked image inside the modal
-        // Get the content of the image description and insert it inside the modal image caption
         var images = document.getElementsByTagName('img');
         var modalImg = document.getElementById("img01");
         var captionText = document.getElementById("caption");
-        var i;
-        for (i = 0; i < images.length; i++) {
+        
+        for (let i = 0; i < images.length; i++) {
+          if(images[i].classList.contains('header-logo')) continue;
+
           images[i].onclick = function(){
             modal.style.display = "block";
             modalImg.src = this.src;
             modalImg.alt = this.alt;
-            captionText.innerHTML = this.nextElementSibling ? this.nextElementSibling.innerHTML : this.alt;
+            captionText.innerHTML = this.alt;
           }
         }
-
         
+        // 4. Remote CSV Retrieval Pipeline Execution Array (Monthly Calendar Elements)
         fetch('https://chunwahyu.github.io/okae-home/uploads/star_records.csv')
             .then(response => {
                 if (!response.ok) throw new Error('File not found');
@@ -535,7 +467,6 @@
                 const year = parseInt(matches[0]);
                 const month = parseInt(matches[1]);
                 
-                // 解析 "5:1,12:3,18:2,25:4" 成為一個 JavaScript 鍵值對物件 (Map)
                 const starredDaysRaw = matches[2].replace(/"/g, '');
                 const starMap = {};
                 let totalStarsCalculated = 0;
@@ -545,11 +476,10 @@
                         const [day, count] = item.split(':');
                         const starCount = parseInt(count);
                         starMap[parseInt(day)] = starCount;
-                        totalStarsCalculated += starCount; // accumulate stars
+                        totalStarsCalculated += starCount; 
                     });
                 }
 
-                // 呼叫渲染函式
                 renderCalendar(year, month, starMap, totalStarsCalculated);
             })
             .catch(error => {
@@ -567,29 +497,22 @@
             const startDayOfWeek = new Date(year, month - 1, 1).getDay();
             const daysContainer = document.getElementById("calendar-days");
 
-            // render leading blank grids
             for (let i = 0; i < startDayOfWeek; i++) {
                 const blankSlot = document.createElement("div");
+                blankSlot.style.background = "transparent";
                 daysContainer.appendChild(blankSlot);
             }
 
-            // Rendering date and stars
             for (let day = 1; day <= totalDays; day++) {
                 const daySquare = document.createElement("div");
                 daySquare.classList.add("day");
                 daySquare.innerText = day;
 
-                // Check if there are any star settings for the day
                 if (starMap[day]) {
                     const starCount = starMap[day];
-                    
-                    // A special HTML block for displaying stars was created
                     const starsDiv = document.createElement("div");
                     starsDiv.classList.add("stars-container");
-                    
-                    // based on CSV to set quality，and make "★"
                     starsDiv.innerText = "★".repeat(starCount);
-                    
                     daySquare.appendChild(starsDiv);
                 }
 
@@ -597,61 +520,51 @@
             }
         }
 
-        
-    // Get yesterday's date
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
+        // 5. Native Localization Date Formatting Rules Matrix Loader
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
 
-    // Format date and weekday
-    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
-    const optionsWeekday = { weekday: 'long' };
-    document.getElementById("date").textContent = yesterday.toLocaleDateString(undefined, optionsDate);
-    document.getElementById("weekday").textContent = yesterday.toLocaleDateString(undefined, optionsWeekday);
+        const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+        const optionsWeekday = { weekday: 'long' };
+        document.getElementById("date").textContent = yesterday.toLocaleDateString(undefined, optionsDate);
+        document.getElementById("weekday").textContent = yesterday.toLocaleDateString(undefined, optionsWeekday);
 
-    async function loadCSV() {
-      // Fetch CSV from uploads folder
-      const response = await fetch("https://chunwahyu.github.io/okae-home/uploads/happiness_scores.csv");
-      const text = await response.text();
-      const rows = text.trim().split("\n").map(r => r.split(","));
-      const data = rows.slice(1); // skip header
+        async function loadCSV() {
+          const response = await fetch("https://chunwahyu.github.io/okae-home/uploads/happiness_scores.csv");
+          const text = await response.text();
+          const rows = text.trim().split("\n").map(r => r.split(","));
+          const data = rows.slice(1); 
 
-      // Yesterday in YYYY-MM-DD format
-      const yDateStr = yesterday.toISOString().split("T")[0];
-      const entry = data.find(row => row[0] === yDateStr);
+          const yDateStr = yesterday.toISOString().split("T")[0];
+          const entry = data.find(row => row[0] === yDateStr);
 
-      const starElement = document.getElementById("star");
-      const scoreElement = document.getElementById("score");
-      const earnedElement = document.getElementById("earned");
+          const starElement = document.getElementById("star");
+          const scoreElement = document.getElementById("score");
+          const earnedElement = document.getElementById("earned");
 
-      if (entry) {
-        const scoreValue = parseInt(entry[1], 10);
-        const starEarned = parseInt(entry[2], 10);
+          if (entry) {
+            const scoreValue = parseInt(entry[1], 10);
+            const starEarned = parseInt(entry[2], 10);
 
-        // Show score inside star
-        scoreElement.textContent = scoreValue;
+            scoreElement.textContent = scoreValue;
+            starElement.classList.remove("yellow", "plain");
 
-        // Reset star color
-        starElement.classList.remove("yellow", "plain");
+            if (scoreValue >= 80) {
+              starElement.classList.add("yellow");
+            } else {
+              starElement.classList.add("plain");
+            }
 
-        // Color star based on score
-        if (scoreValue >= 80) {
-          starElement.classList.add("yellow");
-        } else {
-          starElement.classList.add("plain");
+            earnedElement.textContent = `You have earned ${starEarned} star${starEarned !== 1 ? "s" : ""}`;
+          } else {
+            scoreElement.textContent = "N/A";
+            starElement.classList.add("plain");
+            earnedElement.textContent = "No data found for yesterday";
+          }
         }
 
-        // Show earned stars message
-        earnedElement.textContent = `You have earned ${starEarned} star${starEarned !== 1 ? "s" : ""}`;
-      } else {
-        scoreElement.textContent = "N/A";
-        starElement.classList.add("plain");
-        earnedElement.textContent = "No data found for yesterday";
-      }
-    }
-
-    loadCSV();
-                
+        loadCSV();
     </script>
 </body>
 </html>
