@@ -8,25 +8,26 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
     <style>
-        /* Base Configuration & CSS Custom Variables */
+        /* Base Configuration & Milk Tea Theme Variables */
         :root {
-            --tg-theme-bg-color: #ffffff;
-            --tg-theme-secondary-bg-color: #f1f5f9;
-            --tg-theme-text-color: #1e293b;
-            --tg-theme-hint-color: #64748b;
-            --tg-theme-link-color: #3b82f6;
-            --tg-theme-button-color: #2563eb;
+            /* Milk Tea Color Palette */
+            --tg-theme-bg-color: #f4efe9;           /* Light Milk Tea Cream */
+            --tg-theme-secondary-bg-color: #e9dfd3; /* Smooth Froth / Warm Beige */
+            --tg-theme-text-color: #36251c;         /* Dark Espresso Brown */
+            --tg-theme-hint-color: #8c7667;         /* Soft Tea Leaf Brown */
+            --tg-theme-link-color: #9e7a61;         /* Warm Caramel Accent */
+            --tg-theme-button-color: #7c5943;       /* Roasted Milk Tea / Brown Sugar */
             --tg-theme-button-text-color: #ffffff;
             
-            --success-color: #10b981;
-            --danger-color: #ef4444;
-            --warning-color: #f59e0b;
-            --star-gold: #f59e0b;
-            --star-gray: #cbd5e1;
+            --success-color: #889e81;               /* Matcha Green Accent */
+            --danger-color: #c98a7d;                /* Soft Rose Tea Accent */
+            --warning-color: #d99b62;               /* Orange Peel Tea Accent */
+            --star-gold: #d99b62;                   /* Golden Pearl Brown */
+            --star-gray: #d5cbbf;                   /* Muted Sand Gray */
             --radius-lg: 16px;
             --radius-md: 12px;
             --radius-sm: 8px;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 10px -2px rgb(54 37 28 / 0.06), 0 2px 4px -2px rgb(54 37 28 / 0.04);
             --transition: all 0.2s ease;
         }
 
@@ -40,7 +41,6 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--tg-theme-bg-color);
             color: var(--tg-theme-text-color);
-            /* Adaptive padding to respect mobile chin safety areas and sticky header */
             padding: 80px 12px calc(20px + env(safe-area-inset-bottom)) 12px;
             display: flex;
             flex-direction: column;
@@ -58,23 +58,16 @@
             left: 0;
             right: 0;
             height: 60px;
-            background-color: rgba(255, 255, 255, 0.85);
+            background-color: rgba(244, 239, 233, 0.85); /* Blurred Milk Tea Base */
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(124, 89, 67, 0.1);
             z-index: 100;
             display: flex;
             align-items: center;
             padding: 0 16px;
             padding-top: env(safe-area-inset-top);
             height: calc(60px + env(safe-area-inset-top));
-        }
-
-        /* Support Telegram Dark Theme fallback for header */
-        @media (prefers-color-scheme: dark) {
-            .sticky-header {
-                background-color: rgba(30, 41, 59, 0.85);
-            }
         }
 
         .header-container {
@@ -101,18 +94,19 @@
             font-size: 15px;
             font-weight: 700;
             letter-spacing: -0.3px;
+            color: var(--tg-theme-button-color);
         }
 
         .user-greeting {
             font-size: 11px;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--tg-theme-link-color);
         }
 
         /* --- DASHBOARD MAIN CONTAINER --- */
         .dashboard-content {
             width: 100%;
-            max-width: 480px; /* Adapts cleanly across all smartphone viewport profiles */
+            max-width: 480px;
             display: flex;
             flex-direction: column;
             gap: 16px;
@@ -120,8 +114,8 @@
 
         /* --- CARDS ARCHITECTURE --- */
         .card {
-            background-color: var(--tg-theme-bg-color);
-            border: 1px solid rgba(0, 0, 0, 0.04);
+            background-color: #faf8f5; /* Pure Milk Foam Cream Surface */
+            border: 1px solid rgba(124, 89, 67, 0.08);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow);
             padding: 16px;
@@ -130,7 +124,7 @@
 
         .card-title {
             font-size: 13px;
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: var(--tg-theme-hint-color);
@@ -139,21 +133,21 @@
 
         /* --- HERO SCORE SECTION --- */
         .hero-card {
-            background: linear-gradient(135deg, var(--tg-theme-bg-color) 0%, var(--tg-theme-secondary-bg-color) 100%);
+            background: linear-gradient(135deg, #faf8f5 0%, var(--tg-theme-secondary-bg-color) 100%);
             border: none;
             padding: 20px 16px;
         }
 
         .date-badge {
             font-size: 13px;
-            font-weight: 600;
-            color: var(--tg-theme-hint-color);
+            font-weight: 700;
+            color: var(--tg-theme-button-color);
         }
 
         .weekday-badge {
             font-size: 11px;
             color: var(--tg-theme-hint-color);
-            opacity: 0.8;
+            opacity: 0.9;
             margin-bottom: 4px;
         }
 
@@ -165,10 +159,7 @@
             transition: var(--transition);
         }
 
-        /* Responsive star scaling based directly on smartphone screen widths */
         .star {
-            font-size: 42vw;
-            /* Clamp ensures it scales fluidly on mobile screens up to a max dimension of 170px */
             font-size: clamp(120px, 42vw, 170px); 
             line-height: 1;
             display: inline-block;
@@ -182,22 +173,22 @@
             transform: translate(-50%, -50%);
             font-size: clamp(32px, 10vw, 42px);
             font-weight: 800;
-            color: #1e293b;
+            color: var(--tg-theme-text-color);
         }
 
         .yellow { color: var(--star-gold); }
         .plain { color: var(--star-gray); }
 
         .earned-message {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--tg-theme-text-color);
-            background: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--tg-theme-button-color);
+            background: rgba(250, 248, 255, 0.8);
             padding: 6px 14px;
             border-radius: var(--radius-sm);
             display: inline-block;
             margin-top: -4px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            border: 1px solid rgba(124, 89, 67, 0.08);
         }
 
         /* --- CALENDAR MINI-APP COMPONENT --- */
@@ -207,6 +198,7 @@
             border-radius: var(--radius-lg);
             overflow: hidden;
             box-shadow: var(--shadow);
+            border: 1px solid rgba(124, 89, 67, 0.1);
         }
 
         .calendar-header {
@@ -220,19 +212,19 @@
 
         .star-counter {
             background: var(--tg-theme-button-color);
-            color: #ffd700;
+            color: #fce7bd; /* Warm cream gold text */
             text-align: center;
             font-size: 11px;
             padding-bottom: 12px;
             font-weight: 600;
-            opacity: 0.9;
+            opacity: 0.95;
         }
 
         .weekdays {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            background: rgba(0, 0, 0, 0.03);
-            color: var(--tg-theme-hint-color);
+            background: rgba(124, 89, 67, 0.08);
+            color: var(--tg-theme-button-color);
             text-align: center;
             font-weight: 700;
             padding: 6px 0;
@@ -244,7 +236,7 @@
             grid-template-columns: repeat(7, 1fr);
             padding: 6px;
             gap: 4px;
-            background: var(--tg-theme-bg-color);
+            background: #faf8f5;
         }
 
         .day {
@@ -254,9 +246,9 @@
             align-items: center;
             justify-content: center;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             border-radius: var(--radius-sm);
-            background: var(--tg-theme-secondary-bg-color);
+            background: var(--tg-theme-bg-color);
             color: var(--tg-theme-text-color);
         }
         
@@ -277,6 +269,7 @@
             cursor: pointer;
             transition: var(--transition);
             display: block;
+            border: 1px solid rgba(124, 89, 67, 0.05);
         }
 
         /* --- MODAL DIALOG DISPLAY --- */
@@ -290,7 +283,7 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(15, 23, 42, 0.96);
+            background-color: rgba(54, 37, 28, 0.96); /* Dark roasted tea modal backdrop */
             backdrop-filter: blur(8px);
         }
 
@@ -306,7 +299,7 @@
             display: block;
             width: 85%;
             text-align: center;
-            color: #f8fafc;
+            color: #f4efe9;
             padding: 16px 0;
             font-weight: 500;
             font-size: 14px;
@@ -325,7 +318,7 @@
             position: absolute;
             top: calc(12px + env(safe-area-inset-top));
             right: 16px;
-            color: #94a3b8;
+            color: #d5cbbf;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
@@ -341,7 +334,7 @@
 </head>
 <body>
 
-    <!-- Sticky Floating Header with iOS/Android notch protection styling constraints -->
+    <!-- Sticky Floating Header -->
     <header class="sticky-header">
         <div class="header-container">
             <img src="https://chunwahyu.github.io/okae-home/uploads/okae-home logo.avif" alt="Okae-Home" class="header-logo">
@@ -352,10 +345,10 @@
         </div>
     </header>
 
-    <!-- Smartphone Form Factor Viewport Container -->
+    <!-- Main Dashboard Body -->
     <main class="dashboard-content">
 
-        <!-- Yesterday Core Matrix Summary Grid Card -->
+        <!-- Happiness Score Hero Card -->
         <section class="card hero-card">
             <div id="date" class="date-badge">---</div>
             <div id="weekday" class="weekday-badge">---</div>
@@ -369,7 +362,7 @@
             </div>
         </section>
 
-        <!-- Metric Calendar Grid System -->
+        <!-- Calendar Component -->
         <section class="calendar">
             <div class="calendar-header" id="calendar-month-year">載入中...</div>
             <div class="star-counter" id="total-stars-count"></div>
@@ -379,7 +372,7 @@
             <div class="days" id="calendar-days"></div>
         </section>
         
-        <!-- Hydration Monitoring Node Container -->
+        <!-- Hydration Monitoring Node -->
         <section class="card">
             <div class="card-title">Today Hydration</div>
             <img src="https://chunwahyu.github.io/okae-home/uploads/charts/today_hydration.png" alt="Today Hydration" class="chart-img">
@@ -391,19 +384,19 @@
             <img src="https://chunwahyu.github.io/okae-home/uploads/charts/weekly_intake.png" alt="Weekly Intake" class="chart-img">
         </section>
 
-        <!-- Sleep Tracking Section Quality -->
+        <!-- Sleep Quality Section -->
         <section class="card">
             <div class="card-title">Sleep Quality Analysis</div>
             <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_quality_chart.png" alt="Sleep quality chart" class="chart-img">
         </section>
         
-        <!-- Sleep Tracking Section Duration -->
+        <!-- Sleep Hours Section -->
         <section class="card">
             <div class="card-title">Sleep Hours Analysis</div>
             <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_hours_chart.png" alt="Sleep hours chart" class="chart-img">
         </section>
 
-        <!-- Scoring Calibration Parameter Framework Diagram -->
+        <!-- Scoring Calibration Diagram -->
         <section class="card">
             <div class="card-title">Scoring Topology Framework</div>
             <img src="https://chunwahyu.github.io/okae-home/uploads/Happiness Proxy Scoring Model2.png" alt="Happiness Scoring System" class="chart-img">
@@ -411,7 +404,7 @@
 
     </main>
 
-    <!-- Image Expansion Dialog Viewport -->
+    <!-- Image Modal -->
     <div id="myModal" class="modal">
         <span class="close">&times;</span>
         <img class="modal-content" id="img01">
@@ -419,18 +412,18 @@
     </div>
     
     <script>
-        // 1. Initialize Telegram WebApp SDK Integration Layers
+        // 1. Initialize Telegram WebApp SDK
         const tg = window.Telegram.WebApp;
         tg.ready(); 
         tg.expand(); 
 
-        // 2. Personalize User Interface Greetings Context Strings
+        // 2. Personalize Greetings
         const greetingText = document.getElementById('greeting');
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            greetingText.innerText = `Hello, ${tg.initDataUnsafe.user.first_name}! 👋`;
+            greetingText.innerText = `Hello, ${tg.initDataUnsafe.user.first_name}! ☕`;
         }
 
-        // 3. Modal Native Expansion Dialog Engines
+        // 3. Modal Image Zoom Systems
         var modal = document.getElementById('myModal');
         var span = document.getElementsByClassName("close")[0];
 
@@ -453,7 +446,7 @@
           }
         }
         
-        // 4. Remote CSV Retrieval Pipeline Execution Array (Monthly Calendar Elements)
+        // 4. Load Records Data (Calendar)
         fetch('https://chunwahyu.github.io/okae-home/uploads/star_records.csv')
             .then(response => {
                 if (!response.ok) throw new Error('File not found');
@@ -491,7 +484,7 @@
             const monthNames = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
             
             document.getElementById("calendar-month-year").innerText = `${year}年 ${monthNames[month - 1]}`;
-            document.getElementById("total-stars-count").innerText = `⭐ 本月星星總數: ${totalStars} 個`;
+            document.getElementById("total-stars-count").innerText = `☕ 本月星星總數: ${totalStars} 個`;
 
             const totalDays = new Date(year, month, 0).getDate();
             const startDayOfWeek = new Date(year, month - 1, 1).getDay();
@@ -520,7 +513,7 @@
             }
         }
 
-        // 5. Native Localization Date Formatting Rules Matrix Loader
+        // 5. Native Localization Date Setup & Score Parser
         const today = new Date();
         const yesterday = new Date(today);
         yesterday.setDate(today.getDate() - 1);
