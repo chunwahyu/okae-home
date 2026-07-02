@@ -381,19 +381,19 @@
         <!-- Intake Analytics Section -->
         <section class="card">
             <div class="card-title">Weekly Intake</div>
-            <img src="https://chunwahyu.github.io/okae-home/uploads/charts/weekly_intake.png" alt="Weekly Intake" class="chart-img">
+            <img src="https://chunwahyu.github.io/okae-home/uploads/charts/weekly_intake.png" alt="Weekly Water Intake" class="chart-img">
         </section>
 
         <!-- Sleep Quality Section -->
         <section class="card">
             <div class="card-title">Sleep Quality Analysis</div>
-            <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_quality_chart.png" alt="Sleep quality chart" class="chart-img">
+            <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_quality_chart.png" alt="Sleep Quality" class="chart-img">
         </section>
         
         <!-- Sleep Hours Section -->
         <section class="card">
             <div class="card-title">Sleep Hours Analysis</div>
-            <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_hours_chart.png" alt="Sleep hours chart" class="chart-img">
+            <img src="https://chunwahyu.github.io/okae-home/uploads/sleep_hours_chart.png" alt="Sleep Hours" class="chart-img">
         </section>
 
         <!-- Scoring Calibration Diagram -->
@@ -453,13 +453,24 @@
                 return response.text();
             })
             .then(csvText => {
-                const lines = csvText.split('\n');
-                const dataLine = lines[1];
+                const lines = csvText.trim().split('\n');
+
+                const today = new Date();
+                const year = today.getFullYear();
+                const month = today.getMonth() + 1; // 1–12
+
+                // Find the line that matches today's year and month
+                const dataLine = lines.find(line => {
+                    const parts = line.split(',');
+                    return parseInt(parts[0], 10) === year &&
+                       parseInt(parts[1], 10) === month;
+                });
+
+                 if (!dataLine) {
+                    throw new Error('No record found for current month');
+                }
+
                 const matches = dataLine.match(/(".*?"|[^,]+)(?=\s*,|\s*$)/g);
-                
-                const year = parseInt(matches[0]);
-                const month = parseInt(matches[1]);
-                
                 const starredDaysRaw = matches[2].replace(/"/g, '');
                 const starMap = {};
                 let totalStarsCalculated = 0;
@@ -467,9 +478,9 @@
                 if (starredDaysRaw.trim() !== "") {
                     starredDaysRaw.split(',').forEach(item => {
                         const [day, count] = item.split(':');
-                        const starCount = parseInt(count);
-                        starMap[parseInt(day)] = starCount;
-                        totalStarsCalculated += starCount; 
+                        const starCount = parseInt(count, 10);
+                        starMap[parseInt(day, 10)] = starCount;
+                        totalStarsCalculated += starCount;
                     });
                 }
 
@@ -482,26 +493,29 @@
 
         function renderCalendar(year, month, starMap, totalStars) {
             const monthNames = ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"];
-            
+    
             document.getElementById("calendar-month-year").innerText = `${year}年 ${monthNames[month - 1]}`;
             document.getElementById("total-stars-count").innerText = `☕ 本月星星總數: ${totalStars} 個`;
 
             const totalDays = new Date(year, month, 0).getDate();
             const startDayOfWeek = new Date(year, month - 1, 1).getDay();
             const daysContainer = document.getElementById("calendar-days");
+            daysContainer.innerHTML = ""; // clear previous
 
+            // Fill blanks before first day
             for (let i = 0; i < startDayOfWeek; i++) {
                 const blankSlot = document.createElement("div");
                 blankSlot.style.background = "transparent";
                 daysContainer.appendChild(blankSlot);
             }
 
+            // Render each day of the month
             for (let day = 1; day <= totalDays; day++) {
                 const daySquare = document.createElement("div");
                 daySquare.classList.add("day");
                 daySquare.innerText = day;
 
-                if (starMap[day]) {
+                if (starMap[day] !== undefined) {
                     const starCount = starMap[day];
                     const starsDiv = document.createElement("div");
                     starsDiv.classList.add("stars-container");
