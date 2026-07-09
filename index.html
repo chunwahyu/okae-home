@@ -549,10 +549,15 @@
           const starElement = document.getElementById("star");
           const scoreElement = document.getElementById("score");
           const earnedElement = document.getElementById("earned");
+          const sleepElement = document.getElementById("sleep");
+          const waterElement = document.getElementById("water");
 
           if (entry) {
-            const scoreValue = parseInt(entry[1], 10);
-            const starEarned = parseInt(entry[2], 10);
+            const [date, scoreStr, starStr, sleepStr, waterStr] = entry;
+            const scoreValue = parseInt(scoreStr, 10);
+            const starEarned = parseInt(starStr, 10);
+            const sleepValue = parseFloat(sleepStr);   // hours slept
+            const waterValue = parseFloat(waterStr);   // liters or cups
 
             scoreElement.textContent = scoreValue;
             starElement.classList.remove("yellow", "plain");
